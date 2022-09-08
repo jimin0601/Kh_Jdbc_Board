@@ -11,7 +11,6 @@ public class Common {
     final static String ORACLE_PWD = "tiger";
     final static String ORACLE_DRV = "oracle.jdbc.OracleDriver";
 
-
     public static Connection getConnection() {
         Connection conn = null;
         try {

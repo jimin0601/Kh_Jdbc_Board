@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class JdbcMain {
-
     public static void main(String[] args) {
         Connection conn = null;
         Statement stmt = null;
