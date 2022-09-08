@@ -43,17 +43,18 @@ public class MemberDAO {
     }
     public void memSelectRst(List<MemberVO> list) {
         for(MemberVO e : list) {
-            System.out.print(e.getMemNO() + " ");
-            System.out.print(e.getNickname() + " ");
-            System.out.print(e.getPwd() + " ");
-            System.out.print(e.getIn_date() + " ");
+            System.out.print("회원번호 [" +e.getMemNO() + "] ");
+            System.out.print("닉네임 [" + e.getNickname() + "] ");
+            System.out.print("패스워드 [" + e.getPwd() + "] ");
+            System.out.print("가입일자 [" + e.getIn_date() + "] ");
             System.out.println();
         }
     }
     public void memInsert() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("MEMBER TABLE 정보 입력");
-        System.out.print("회원번호(4자리) : ");
+        System.out.println("회원가입 버튼");
+        System.out.println("MEMBER TABLE 정보 입력");
+        System.out.print("회원번호(4자리) 입력 : ");
         int memNO = sc.nextInt();
         System.out.print("닉네임 입력 : ");
         String nickname = sc.next();
@@ -64,7 +65,6 @@ public class MemberDAO {
 
         String sql = "INSERT INTO MEMBER(MEMBER_NUM, NICKNAME, PWD, REG_DATE)" +
                 "VALUES(?,?,?,?)";
-
 
         try {
             conn = Common.getConnection();
@@ -77,6 +77,7 @@ public class MemberDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.print(nickname + "정상적으로 가입 되었습니다.");
         Common.close(pmt);
         Common.close(conn);
     }
@@ -125,7 +126,7 @@ public class MemberDAO {
         }
     }
     public void memDelete() {
-        System.out.print("삭제할 닉네임을 입력 하세요 : ");
+        System.out.print("삭제할 닉네임을 입력하세요 : ");
         String nickname = sc.next();
         String sql = "DELETE FROM MEMBER WHERE NICKNAME = ?";
 
