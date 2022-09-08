@@ -1,7 +1,6 @@
 package com.kh;
 
 import com.kh.dao.BoardDAO;
-import com.kh.dao.MemberDAO;
 import com.kh.vo.BoardVO;
 import com.kh.vo.MemberVO;
 
@@ -27,7 +26,7 @@ public class JdbcMain {
     }
     public static void memSelect() {
         Scanner sc = new Scanner(System.in);
-        MemberDAO dao = new MemberDAO();
+        BoardDAO dao = new BoardDAO();
         while (true) {
             System.out.println("====[MEMBER TABLE 조회]====");
             System.out.println("기능 선택 : ");
