@@ -3,6 +3,7 @@ package com.kh.dao;
 import com.kh.util.Common;
 import com.kh.vo.BoardVO;
 import com.kh.vo.MemberVO;
+import com.kh.vo.WriteVO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -150,6 +151,7 @@ public class BoardDAO {
         Common.close(conn);
     }
 
+    // 게시판 보기
     public List<BoardVO> boardSelect() {
         List<BoardVO> list = new ArrayList<>();
         try {
@@ -170,12 +172,14 @@ public class BoardDAO {
         }
         return list;
     }
+    // 게시판 보기.?
     public void boardSelectRst(List<BoardVO> list) {
         for (BoardVO e: list) {
             System.out.print("게시판 이름 : "+e.getBoardName());
             System.out.println();
         }
     }
+    // 게시판 추가
     public void boardInsert() {
         Scanner sc = new Scanner(System.in);
         System.out.println("게시판 추가하기");
@@ -196,6 +200,8 @@ public class BoardDAO {
         Common.close(pmt);
         Common.close(conn);
     }
+
+    // 게시판 이름 변경
     public void boardUpdate() {
         System.out.print("새로운 게시판 이름 설정 : ");
         String rename = sc.next();
@@ -217,6 +223,8 @@ public class BoardDAO {
         Common.close(pmt);
         Common.close(conn);
     }
+
+    // 게시판 삭제
     public void boardDelete() {
         System.out.print("삭제할 게시판을 선택 : ");
         String boardName = sc.next();
@@ -233,5 +241,44 @@ public class BoardDAO {
         }
         Common.close(pmt);
         Common.close(conn);
+    }
+
+    // 게시글 보기
+    public List<WriteVO> writeSelect() {
+        List<WriteVO> list = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM WRITE";
+            rst = stmt.executeQuery(sql);
+            while (rst.next()) {
+                String boardName = rst.getString("BOARD_NAME");
+                int writeNum = rst.getInt("WRITE_NUM");
+                String writeName = rst.getString("WRITE_NAME");
+                int memNum = rst.getInt("MEMBER_NUM");
+                String writeContents = rst.getString("WRITE_CONTENTS");
+                Date writeDate = rst.getDate("WRITE_DATE");
+                WriteVO vo = new WriteVO(boardName, writeNum, writeName,
+                        memNum, writeContents, writeDate);
+                list.add(vo);
+            }
+            Common.close(rst);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    // 게시글 보기
+    public void writeSelectRst(List<WriteVO> list) {
+        for (WriteVO e : list) {
+            System.out.print("게시판 이름 [" + e.getBoardName() + "] ");
+            System.out.print("글 번호 [" + e.getWriteNum() + "] ");
+            System.out.print("글 이름 [" + e.getWriteName() + "] ");
+            System.out.print("글 내용 [" + e.getWriteContents() + "] ");
+            System.out.print("글 작성시간 [" + e.getWriteDate() + "] ");
+            System.out.println();
+        }
     }
 }

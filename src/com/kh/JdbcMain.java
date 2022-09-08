@@ -3,13 +3,14 @@ package com.kh;
 import com.kh.dao.BoardDAO;
 import com.kh.vo.BoardVO;
 import com.kh.vo.MemberVO;
+import com.kh.vo.WriteVO;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class JdbcMain {
     public static void main(String[] args) {
-        System.out.print("==== 테이블 선택 [1]MEMBER, [2]BOARD, [3]EXIT =====");
+        System.out.print("==== 테이블 선택 [1]MEMBER, [2]BOARD, [3]WRITE, [4]EXIT =====");
         Scanner sc = new Scanner(System.in);
         int sel = sc.nextInt();
         switch (sel) {
@@ -19,7 +20,10 @@ public class JdbcMain {
             case 2 :
         boardSelect();
         break;
-            case 3 :
+            case  3 :
+        writeSelect();
+        break;
+            case 4 :
                 System.out.print("종료합니다.");
                 return;
         }
@@ -73,6 +77,31 @@ public class JdbcMain {
                     break;
                 case 4 :
                     dao.boardDelete();
+                    break;
+                case 5 :
+                    System.out.println("메뉴를 종료합니다.");
+                    return;
+            }
+        }
+    }
+    public static void writeSelect() {
+        Scanner sc = new Scanner(System.in);
+        BoardDAO dao = new BoardDAO();
+        while (true) {
+            System.out.println("====[WRITE TABLE 조회]=====");
+            System.out.print("기능 선택 : ");
+            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT");
+            int sel = sc.nextInt();
+            switch (sel) {
+                case 1 :
+                    List<WriteVO> list = dao.writeSelect();
+                    dao.writeSelectRst(list);
+                    break;
+                case 2 :
+                    break;
+                case 3 :
+                    break;
+                case 4 :
                     break;
                 case 5 :
                     System.out.println("메뉴를 종료합니다.");
