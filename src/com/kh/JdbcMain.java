@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+// git . . .
 public class JdbcMain {
     public static void main(String[] args) {
         Connection conn = null;
