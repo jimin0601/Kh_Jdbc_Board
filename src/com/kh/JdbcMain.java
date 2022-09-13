@@ -2,6 +2,7 @@ package com.kh;
 
 import com.kh.dao.BoardDAO;
 import com.kh.vo.BoardVO;
+import com.kh.vo.CommentsVO;
 import com.kh.vo.MemberVO;
 import com.kh.vo.WriteVO;
 
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public class JdbcMain {
     public static void main(String[] args) {
-        System.out.print("==== 테이블 선택 [1]MEMBER, [2]BOARD, [3]WRITE, [4]EXIT =====");
+        System.out.print("==== 테이블 선택 [1]MEMBER, [2]BOARD, [3]WRITE, [4]COMMENTS, [5]EXIT =====");
         Scanner sc = new Scanner(System.in);
         int sel = sc.nextInt();
         switch (sel) {
@@ -24,6 +25,7 @@ public class JdbcMain {
         writeSelect();
         break;
             case 4 :
+        commentsSelect();
                 System.out.print("종료합니다.");
                 return;
         }
@@ -105,6 +107,34 @@ public class JdbcMain {
                     break;
                 case 4 :
                     dao.writeDelete();
+                    break;
+                case 5 :
+                    System.out.println("메뉴를 종료합니다.");
+                    return;
+            }
+        }
+    }
+    public static void commentsSelect() {
+        Scanner sc = new Scanner(System.in);
+        BoardDAO dao = new BoardDAO();
+        while (true) {
+            System.out.println("====[COMMENTS TABLE 조회]=====");
+            System.out.print("기능 선택 : ");
+            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT");
+            int sel = sc.nextInt();
+            switch (sel) {
+                case 1 :
+                    List<CommentsVO> list = dao.commentsSelect();
+                    dao.commentsSelectRst(list);
+                    break;
+                case 2 :
+                    dao.commentsInsert();
+                    break;
+                case 3 :
+                    dao.commentsUpdate();
+                    break;
+                case 4 :
+                    dao.commentsDelete();
                     break;
                 case 5 :
                     System.out.println("메뉴를 종료합니다.");

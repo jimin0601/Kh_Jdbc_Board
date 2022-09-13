@@ -2,6 +2,7 @@ package com.kh.dao;
 
 import com.kh.util.Common;
 import com.kh.vo.BoardVO;
+import com.kh.vo.CommentsVO;
 import com.kh.vo.MemberVO;
 import com.kh.vo.WriteVO;
 
@@ -78,7 +79,9 @@ public class BoardDAO {
             pmt.setString(2, nickname);
             pmt.setString(3, pwd);
             pmt.setString(4, in_date);
-            pmt.executeUpdate();
+            int rst = pmt.executeUpdate();
+            System.out.println("Return : " + rst);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -192,7 +195,9 @@ public class BoardDAO {
             conn = Common.getConnection();
             pmt = conn.prepareStatement(sql);
             pmt.setString(1, boardName);
-            pmt.executeUpdate();
+            int rst = pmt.executeUpdate();
+            System.out.println("Return : " + rst);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -243,7 +248,7 @@ public class BoardDAO {
         Common.close(conn);
     }
 
-    // 게시글 보기
+    // 게시글 보기..
     public List<WriteVO> writeSelect() {
         List<WriteVO> list = new ArrayList<>();
         try {
@@ -270,7 +275,8 @@ public class BoardDAO {
         }
         return list;
     }
-    // 게시글 보기
+
+    // 게시글 보기.,.
     public void writeSelectRst(List<WriteVO> list) {
         for (WriteVO e : list) {
             System.out.print("게시판 이름 [" + e.getBoardName() + "] ");
@@ -282,7 +288,7 @@ public class BoardDAO {
             System.out.println();
         }
     }
-
+    // 게시글 쓰기
     public void writeInsert() {
         Scanner sc = new Scanner(System.in);
         System.out.println("**** 게시판 글 쓰기 ****");
@@ -312,6 +318,9 @@ public class BoardDAO {
             pmt.setInt(4, memberNum);
             pmt.setString(5, contents);
             pmt.setString(6, writeDate);
+            int rst = pmt.executeUpdate();
+            System.out.println("Return : " + rst);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -319,8 +328,10 @@ public class BoardDAO {
         Common.close(pmt);
         Common.close(conn);
     }
+
+    // 게시글 수정
     public void writeUpdate() {
-        System.out.println("게시글 수정 [1]내용 수정, [2]마지막 수정 시간, [3]게시판 옮기기");
+        System.out.println("게시글 수정 [1]내용 수정, [2]게시판 옮기기");
         int sel = sc.nextInt();
         switch (sel) {
             case 1 :
@@ -346,53 +357,30 @@ public class BoardDAO {
                 break;
 
             case 2 :
-                System.out.print("마지막 수정 시간 입력 : ");
-                String upWrite = sc.nextLine();
-                String sql2 = "UPDATE WRITE SET (수정시간 어떻게 할지 고민 중) = ? WHERE WRITE_NUM = ?";
-
-                try {
-                    conn = Common.getConnection();
-                    pmt = conn.prepareStatement(sql2);
-                    System.out.print("최종 수정시간 입력 : ");
-                    pmt.setString(1, upWrite);
-                    int writeNum = sc.nextInt();
-                    System.out.print("수정한 글 번호를 입력 : ");
-                    pmt.setInt(2, writeNum);
-                    int ret = pmt.executeUpdate();
-                    System.out.println("Return : " + ret);
-                    System.out.println("최종 수정한 시간은 : " + upWrite);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Common.close(pmt);
-                Common.close(conn);
-                break;
-
-            case 3 :
-                System.out.print("게시판 옮기기");
+                System.out.print("옮기는 게시판 이름 : ");
+                sc.nextLine();
                 String reBoard = sc.nextLine();
-                String sql3 = "UPDATE WRITE SET BOARD_NAME = ? WHERE WRITE_NAME = ?";
+                String sql3 = "UPDATE WRITE SET BOARD_NAME = ? WHERE WRITE_NUM = ?";
 
                 try {
                     conn = Common.getConnection();
                     pmt = conn.prepareStatement(sql3);
-                    System.out.print("게시판을 옮기는 이유 선택하세요 : [1]게시판의 주제와 어울리지 않음, [2] 게시판을 처음에 잘못 선택, [3] 기타");
+                    System.out.print("게시판을 옮기는 이유 선택하세요 >> [1]게시판의 주제와 어울리지 않음, [2] 게시판을 처음에 잘못 선택, [3] 기타 : ");
                     int sl = sc.nextInt();
                     if(sl == 1) {
-                        System.out.println("옮길 게시판 이름을 입려하세요 : ");
                         pmt.setString(1, reBoard);
-                    } else if (sl == 2) {
-                        System.out.println("옮길 게시판 이름을 입려하세요 : ");
+                    }
+                    else if (sl == 2) {
                         pmt.setString(1, reBoard);
-                    } else if (sl == 3) {
-                        System.out.println("옮길 게시판 이름을 입려하세요 : ");
+                    }
+                    else if (sl == 3) {
                         pmt.setString(1, reBoard);
-                    } else {
+                    }
+                    else {
                         System.out.println("게시판을 옮기지 않습니다.");
                         break;
                     }
-                    System.out.print("게시판에 옮길 글 번호를 입력하세요.");
+                    System.out.print("게시판에 옮길 글 번호를 입력하세요 : ");
                     int writeNum = sc.nextInt();
                     pmt.setInt(2, writeNum);
                     int ret = pmt.executeUpdate();
@@ -407,7 +395,7 @@ public class BoardDAO {
                 break;
         }
     }
-
+    // 게시글 삭제
     public void writeDelete() {
         System.out.print("삭제할 글을 선택 : ");
         String writeName = sc.next();
@@ -417,6 +405,121 @@ public class BoardDAO {
             conn = Common.getConnection();
             pmt = conn.prepareStatement(sql);
             pmt.setString(1, writeName);
+            pmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pmt);
+        Common.close(conn);
+    }
+    // 댓글 보기
+    public List<CommentsVO> commentsSelect() {
+        List<CommentsVO> list = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM COMMENTS";
+            rst = stmt.executeQuery(sql);
+            while (rst.next()) {
+                int memberNum = rst.getInt("MEMBER_NUM");
+                String cmtContents = rst.getNString("COMMENT_CONTENT");
+                Date writeDate = rst.getDate("WRITE_DATE");
+                int writeNum = rst.getInt("WRITE_NUM");
+                CommentsVO vo = new CommentsVO(memberNum, cmtContents, writeDate, writeNum);
+                list.add(vo);
+            }
+            Common.close(rst);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public void commentsSelectRst(List<CommentsVO> list) {
+        for (CommentsVO e : list) {
+            System.out.print("회원 번호 [" + e.getMemberNum() + "] ");
+            System.out.print("댓글 내용 [" + e.getCmtContent() + "] ");
+            System.out.print("댓글 작성일 [" + e.getWriteDate() + "] ");
+            System.out.print("게시글 번호 [" + e.getWriteNum() + "] ");
+            System.out.println();
+        }
+    }
+    // 댓글 작성
+    public void commentsInsert() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("**** 댓글 쓰기 ****");
+        System.out.print("회원 번호 입력 : ");
+        int memberNum = sc.nextInt();
+        sc.nextLine();
+        System.out.print("댓글 작성 : ");
+        String contents = sc.nextLine();
+//        System.out.print("댓글 작성일 : ");
+//        String writeDate = sc.nextLine();
+        System.out.print("댓글 작성할 게시글 번호 입력 : ");
+        int writeNum = sc.nextInt();
+
+        String sql = "INSERT INTO COMMENTS (MEMBER_NUM, COMMENT_CONTENT, WRITE_DATE, WRITE_NUM)" +
+                "VALUES(?, ?, DEFAULT, ?)";
+
+        try {
+            conn = Common.getConnection();
+            pmt = conn.prepareStatement(sql);
+            pmt.setInt(1, memberNum);
+            pmt.setString(2, contents);
+//            pmt.setString(3, writeDate);
+            pmt.setInt(3, writeNum);
+            int rst = pmt.executeUpdate();
+            System.out.println("Return : " + rst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("댓글 작성 완료. ! .");
+        Common.close(pmt);
+        Common.close(conn);
+    }
+    // 댓글 수정
+    public void commentsUpdate() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("====== 댓글 수정하기 ======");
+        System.out.print("댓글 수정 : ");
+        String contents = sc.nextLine();
+        String sql = "UPDATE COMMENTS SET COMMENT_CONTENT = ? WHERE WRITE_NUM = ?  AND MEMBER_NUM = ?";
+
+        try {
+            conn = Common.getConnection();
+            pmt = conn.prepareStatement(sql);
+            pmt.setString(1, contents);
+            System.out.print("댓글 수정할 게시글 번호를 선택 : ");
+            int writeNum = sc.nextInt();
+            pmt.setInt(2, writeNum);
+            System.out.print("본인 댓글 수정을 위한 회원번호 입력 : ");
+            int memNum = sc.nextInt();
+            pmt.setInt(3, memNum);
+            int rst = pmt.executeUpdate();
+            System.out.println("Return : " + rst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pmt);
+        Common.close(conn);
+    }
+    public void commentsDelete() {
+        System.out.print("<< 게시글 댓글 삭제하기 >>");
+        String sql = "DELETE FROM COMMENTS WHERE MEMBER_NUM = ? AND WRITE_NUM = ?";
+
+        try {
+            conn = Common.getConnection();
+            pmt = conn.prepareStatement(sql);
+            System.out.print("삭제 전에 본인 회원번호 입력 : ");
+            int memNum = sc.nextInt();
+            pmt.setInt(1, memNum);
+            System.out.print("댓글 삭제할 글 번호 입력 : ");
+            int writeNum = sc.nextInt();
+            pmt.setInt(2, writeNum);
             pmt.executeUpdate();
 
         } catch (Exception e) {
