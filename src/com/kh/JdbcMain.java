@@ -11,7 +11,11 @@ import java.util.Scanner;
 
 public class JdbcMain {
     public static void main(String[] args) {
-        System.out.print("==== 테이블 선택 [1]MEMBER, [2]BOARD, [3]WRITE, [4]COMMENTS, [5]EXIT =====");
+        BoardDAO dao = new BoardDAO();
+        dao.memLogin();
+        System.out.println("로그아웃 성공.");
+
+        System.out.print("==== 테이블 선택 [1]MEMBER, [2]BOARD, [3]WRITE, [4]COMMENTS, [5]로그아웃 =====");
         Scanner sc = new Scanner(System.in);
         int sel = sc.nextInt();
         switch (sel) {
@@ -26,7 +30,7 @@ public class JdbcMain {
         break;
             case 4 :
         commentsSelect();
-                System.out.print("종료합니다.");
+                System.out.println("로그아웃 성공.");
                 return;
         }
     }
@@ -36,7 +40,7 @@ public class JdbcMain {
         while (true) {
             System.out.println("====[MEMBER TABLE 조회]====");
             System.out.println("기능 선택 : ");
-            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT");
+            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]로그아웃");
             int sel = sc.nextInt();
             switch (sel) {
                 case 1 :
@@ -53,7 +57,7 @@ public class JdbcMain {
                     dao.memDelete();
                     break;
                 case 5 :
-                    System.out.println("메뉴를 종료합니다.");
+                    System.out.println("로그아웃 성공.");
                     return;
             }
         }
@@ -64,7 +68,7 @@ public class JdbcMain {
         while (true) {
             System.out.println("=====[BOARD TABLE 조회]====");
             System.out.print("기능 선택 : ");
-            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT");
+            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]로그아웃");
             int sel = sc.nextInt();
             switch (sel) {
                 case 1 :
@@ -81,7 +85,7 @@ public class JdbcMain {
                     dao.boardDelete();
                     break;
                 case 5 :
-                    System.out.println("메뉴를 종료합니다.");
+                    System.out.println("로그아웃 성공.");
                     return;
             }
         }
@@ -92,7 +96,7 @@ public class JdbcMain {
         while (true) {
             System.out.println("====[WRITE TABLE 조회]=====");
             System.out.print("기능 선택 : ");
-            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT");
+            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]로그아웃");
             int sel = sc.nextInt();
             switch (sel) {
                 case 1 :
@@ -109,7 +113,7 @@ public class JdbcMain {
                     dao.writeDelete();
                     break;
                 case 5 :
-                    System.out.println("메뉴를 종료합니다.");
+                    System.out.println("로그아웃 성공.");
                     return;
             }
         }
@@ -120,7 +124,7 @@ public class JdbcMain {
         while (true) {
             System.out.println("====[COMMENTS TABLE 조회]=====");
             System.out.print("기능 선택 : ");
-            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT");
+            System.out.println("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]로그아웃");
             int sel = sc.nextInt();
             switch (sel) {
                 case 1 :
@@ -137,7 +141,7 @@ public class JdbcMain {
                     dao.commentsDelete();
                     break;
                 case 5 :
-                    System.out.println("메뉴를 종료합니다.");
+                    System.out.println("로그아웃 성공.");
                     return;
             }
         }

@@ -17,6 +17,46 @@ public class BoardDAO {
     PreparedStatement pmt = null;
     ResultSet rst = null;
     Scanner sc = new Scanner(System.in);
+    // 로그인 기능 구현. ! .
+    public List<MemberVO> memLogin() {
+        List<MemberVO> list = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM MEMBER";
+            rst = stmt.executeQuery(sql);
+
+        System.out.println("====================  KH 게시판 로그인 하기 ====================");
+        while (rst.next()) {
+        System.out.print("닉네임 입력 : ");
+        String nickname = sc.next();
+        if(rst.getString("NICKNAME").equalsIgnoreCase(nickname)) {
+            System.out.println("닉네임 입력 완료. ");
+        } else {
+                System.out.println("닉네임을 잘못 입력했습니다. 다시 입력하세요.");
+                continue;
+            }
+
+                System.out.print("비밀번호 입력 : ");
+                String pwd = sc.next();
+                if(rst.getString("PWD").equalsIgnoreCase(pwd)) {
+                    System.out.println("로그인 성공 ! . ! . ! ");
+                    System.out.println("안녕하세요. " + nickname + "님 오늘도 KH 게시판을 찾아주셔서 감사합니다.");
+                } else {
+                    System.out.println("비밀번호를 잘못 입력했습니다.");
+                    continue;
+                } break;
+        }
+        Common.close(rst);
+        Common.close(stmt);
+        Common.close(conn);
+        } catch (Exception e ) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     // 회원정보 조회
     public List<MemberVO> memSelect() {
         List<MemberVO> list = new ArrayList<>();
@@ -331,7 +371,7 @@ public class BoardDAO {
 
     // 게시글 수정
     public void writeUpdate() {
-        System.out.println("게시글 수정 [1]내용 수정, [2]게시판 옮기기");
+        System.out.println("게시글 수정 [1]내용 수정, [2]게시판 옮기기, [3]게시글 이름 변경 ");
         int sel = sc.nextInt();
         switch (sel) {
             case 1 :
@@ -360,12 +400,12 @@ public class BoardDAO {
                 System.out.print("옮기는 게시판 이름 : ");
                 sc.nextLine();
                 String reBoard = sc.nextLine();
-                String sql3 = "UPDATE WRITE SET BOARD_NAME = ? WHERE WRITE_NUM = ?";
+                String sql2 = "UPDATE WRITE SET BOARD_NAME = ? WHERE WRITE_NUM = ?";
 
                 try {
                     conn = Common.getConnection();
-                    pmt = conn.prepareStatement(sql3);
-                    System.out.print("게시판을 옮기는 이유 선택하세요 >> [1]게시판의 주제와 어울리지 않음, [2] 게시판을 처음에 잘못 선택, [3] 기타 : ");
+                    pmt = conn.prepareStatement(sql2);
+                    System.out.print("게시판을 옮기는 이유를 선택하세요 >> [1]게시판의 주제와 어울리지 않음, [2] 게시판을 처음에 잘못 선택, [3] 기타, [4] 잘못 들어옴 : ");
                     int sl = sc.nextInt();
                     if(sl == 1) {
                         pmt.setString(1, reBoard);
@@ -393,6 +433,27 @@ public class BoardDAO {
                 Common.close(pmt);
                 Common.close(conn);
                 break;
+
+            case 3 :
+                System.out.print("변경할 게시글 이름 : ");
+                sc.nextLine();
+                String reWriteName = sc.nextLine();
+                String sql3 = "UPDATE WRITE SET WRITE_NAME = ? WHERE WRITE_NUM = ?";
+
+                try {
+                    conn = Common.getConnection();
+                    pmt = conn.prepareStatement(sql3);
+                    pmt.setString(1, reWriteName);
+                    System.out.println("이름 변경할 게시글 번호를 입력 : ");
+                    int writeNum = sc.nextInt();
+                    pmt.setInt(2, writeNum);
+                    int ret = pmt.executeUpdate();
+                    System.out.println("Return : " + ret);
+                    System.out.println(reWriteName + "으로 이름 변경 완료..!");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
     }
     // 게시글 삭제
