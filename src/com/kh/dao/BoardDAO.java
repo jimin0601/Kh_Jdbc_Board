@@ -281,4 +281,146 @@ public class BoardDAO {
             System.out.println();
         }
     }
+
+    public void writeInsert() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("**** 게시판 글 쓰기 ****");
+        System.out.print("게시판을 선택 >>> [1]질문, [2]취업진로, [3]맛집추천, [4]자유게시판");
+        String boardName = sc.next();
+        // 추후에 수정 예정
+        System.out.print("글 번호 입력");
+        int writeNum = sc.nextInt();
+        System.out.print("게시글 제목을 입력하세요.");
+        String writeName = sc.nextLine();
+        System.out.print("본인 회원번호 입력");
+        int memberNum = sc.nextInt();
+        System.out.print("글 내용을 작성하세요.");
+        String contents = sc.nextLine();
+        System.out.print("작성 시간 입력.");
+        String writeDate = sc.nextLine();
+
+        String sql = "INSERT INTO WRITE (BOARD_NAME, WRITE_NUM, WRITE_NAME, MEMBER_NUM, WRITE_CONTENTS, WRITE_DATE)" +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+
+        try {
+            conn = Common.getConnection();
+            pmt = conn.prepareStatement(sql);
+            pmt.setString(1, boardName);
+            pmt.setInt(2, writeNum);
+            pmt.setString(3, writeName);
+            pmt.setInt(4, memberNum);
+            pmt.setString(5, contents);
+            pmt.setString(6, writeDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("정상으록 글이 올라갔습니다.");
+        Common.close(pmt);
+        Common.close(conn);
+    }
+    public void writeUpdate() {
+        System.out.println("게시글 수정 [1]내용 수정, [2]마지막 수정 시간, [3]게시판 옮기기");
+        int sel = sc.nextInt();
+        switch (sel) {
+            case 1 :
+                System.out.print("내용을 수정 : ");
+                String contents = sc.nextLine();
+                String sql1 = "UPDATE WRITE SET WRITE_CONTENTS = ? WHERE MEMBER_NUM = ?";
+                try {
+                    conn = Common.getConnection();
+                    pmt = conn.prepareStatement(sql1);
+                    pmt.setString(1, contents);
+                    System.out.print("본인 회원번호 입력 : ");
+                    int memberNum = sc.nextInt();
+                    pmt.setInt(2, memberNum);
+                    int ret = pmt.executeUpdate();
+                    System.out.println("Return : " + ret);
+                    System.out.println("글이 정상으로 수정되었습니다.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Common.close(pmt);
+                Common.close(conn);
+                break;
+
+            case 2 :
+                System.out.print("마지막 수정 시간 입력 : ");
+                String upWrite = sc.nextLine();
+                String sql2 = "UPDATE WRITE SET (수정시간 어떻게 할지 고민 중) = ? WHERE WRITE_NUM = ?";
+
+                try {
+                    conn = Common.getConnection();
+                    pmt = conn.prepareStatement(sql2);
+                    System.out.print("최종 수정시간 입력 : ");
+                    pmt.setString(1, upWrite);
+                    int writeNum = sc.nextInt();
+                    System.out.print("수정한 글 번호를 입력 : ");
+                    pmt.setInt(2, writeNum);
+                    int ret = pmt.executeUpdate();
+                    System.out.println("Return : " + ret);
+                    System.out.println("최종 수정한 시간은 : " + upWrite);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Common.close(pmt);
+                Common.close(conn);
+                break;
+
+            case 3 :
+                System.out.print("게시판 옮기기");
+                String reBoard = sc.nextLine();
+                String sql3 = "UPDATE WRITE SET BOARD_NAME = ? WHERE WRITE_NAME = ?";
+
+                try {
+                    conn = Common.getConnection();
+                    pmt = conn.prepareStatement(sql3);
+                    System.out.print("게시판을 옮기는 이유 선택하세요 : [1]게시판의 주제와 어울리지 않음, [2] 게시판을 처음에 잘못 선택, [3] 기타");
+                    int sl = sc.nextInt();
+                    if(sl == 1) {
+                        System.out.println("옮길 게시판 이름을 입려하세요 : ");
+                        pmt.setString(1, reBoard);
+                    } else if (sl == 2) {
+                        System.out.println("옮길 게시판 이름을 입려하세요 : ");
+                        pmt.setString(1, reBoard);
+                    } else if (sl == 3) {
+                        System.out.println("옮길 게시판 이름을 입려하세요 : ");
+                        pmt.setString(1, reBoard);
+                    } else {
+                        System.out.println("게시판을 옮기지 않습니다.");
+                        break;
+                    }
+                    System.out.print("게시판에 옮길 글 번호를 입력하세요.");
+                    int writeNum = sc.nextInt();
+                    pmt.setInt(2, writeNum);
+                    int ret = pmt.executeUpdate();
+                    System.out.println("Return : " + ret);
+                    System.out.println("["+reBoard + "] 게시판에 정상으로 옮겼습니다");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Common.close(pmt);
+                Common.close(conn);
+                break;
+        }
+    }
+
+    public void writeDelete() {
+        System.out.print("삭제할 글을 선택 : ");
+        String writeName = sc.next();
+        String sql = "DELETE FROM WRITE WHERE WRITE_NAME = ?";
+
+        try {
+            conn = Common.getConnection();
+            pmt = conn.prepareStatement(sql);
+            pmt.setString(1, writeName);
+            pmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pmt);
+        Common.close(conn);
+    }
 }

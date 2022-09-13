@@ -98,10 +98,13 @@ public class JdbcMain {
                     dao.writeSelectRst(list);
                     break;
                 case 2 :
+                    dao.writeInsert();
                     break;
                 case 3 :
+                    dao.writeUpdate();
                     break;
                 case 4 :
+                    dao.writeDelete();
                     break;
                 case 5 :
                     System.out.println("메뉴를 종료합니다.");
