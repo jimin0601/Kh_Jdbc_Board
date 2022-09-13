@@ -276,6 +276,7 @@ public class BoardDAO {
             System.out.print("게시판 이름 [" + e.getBoardName() + "] ");
             System.out.print("글 번호 [" + e.getWriteNum() + "] ");
             System.out.print("글 이름 [" + e.getWriteName() + "] ");
+            System.out.print("회원 번호 [" + e.getMemNum() + "] ");
             System.out.print("글 내용 [" + e.getWriteContents() + "] ");
             System.out.print("글 작성시간 [" + e.getWriteDate() + "] ");
             System.out.println();
@@ -324,6 +325,7 @@ public class BoardDAO {
         switch (sel) {
             case 1 :
                 System.out.print("내용을 수정 : ");
+                sc.nextLine();
                 String contents = sc.nextLine();
                 String sql1 = "UPDATE WRITE SET WRITE_CONTENTS = ? WHERE MEMBER_NUM = ?";
                 try {
