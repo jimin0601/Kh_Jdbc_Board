@@ -446,7 +446,6 @@ public class BoardDAO {
             System.out.println();
         }
     }
-
     // 댓글 작성
     public void commentsInsert() {
         Scanner sc = new Scanner(System.in);
